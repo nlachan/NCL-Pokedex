@@ -1,6 +1,7 @@
-const pokemonRepository = (function () {
+//IIFE for pokemon
+let pokemonRepository = (function () {
   // Array containing Pokemon objects
-  const pokemonList = [
+  let pokemonList = [
     {
       name: "Bulbasaur",
       type: ["Grass", "Poison"],
@@ -21,10 +22,20 @@ const pokemonRepository = (function () {
     },
   ];
 
+  //Puts the pokemon onto the list of pokemons
+  function add(pokemon) {
+    if (typeof pokemon === "object" && "name" in pokemon) {
+      pokemonList.push(pokemon);
+    } else {
+      console.log("pokemon not found");
+    }
+  }
+
   return {
     add: function (pokemon) {
       pokemonList.push(pokemon);
     },
+    //Gets all entries listed in the pokedex
     getAll: function () {
       return pokemonList;
     },
@@ -34,8 +45,6 @@ const pokemonRepository = (function () {
 console.log(pokemonRepository.getAll());
 pokemonRepository.add({ name: "Charmander" });
 console.log(pokemonRepository.getAll());
-
-/* The loop code below was replaced with the foreach() which does the same thing*/
 
 pokemonRepository.getAll().forEach(function (pokemon) {
   if (pokemon.height >= 1) {
@@ -54,3 +63,4 @@ pokemonRepository.getAll().forEach(function (pokemon) {
     );
   }
 });
+/* The loop code above was replaced with the foreach() which does the same thing*/
