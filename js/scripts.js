@@ -57,7 +57,6 @@ let pokemonRepository = (function () {
             detailsUrl: item.url,
           };
           add(pokemon);
-          console.log(pokemon);
         });
       })
       .catch(function (e) {
@@ -78,51 +77,58 @@ let pokemonRepository = (function () {
         item.imageUrl = details.sprites.front_default;
         item.height = details.height;
         item.weight = details.weight;
-        item.types = [];
-        for (var i = 0; i < details.types.length; i++) {
-          item.types.push(details.types[i].type.name);
-        }
-        item.abilities = [];
-        for (var i = 0; i < details.abilities.length; i++) {
-          item.abilities.push(details.abilities[i].ability.name);
-        }
-        showModal(item);
       })
       .catch(function (e) {
         console.error(e);
       });
   }
 
+  function showDetails(item) {
+    pokemonRepository.loadDetails(item).then(function () {
+      showModal(item);
+    });
+  }
+
   // Shows Modal with Pokemon
   function showModal(pokemon) {
-    let modalBody = $(".modal-body");
-    let modalTitle = $(".modal-title");
-    let modalHeader = $(".modal-header");
+    let modalBody = document.querySelector(".modal-body");
+    let modalTitle = document.querySelector(".modal-title");
+    let modalHeader = document.querySelector(".modal-header");
 
-    modalTitle.empty();
-    modalBody.empty();
+    //Clear all existing modal content
+    modalHeader.innerHTML = "";
+    modalTitle.innerHTML = "";
+    modalBody.innerHTML = "";
 
-    let nameElement = $("<h1>" + pokemon.name + "</h1>");
-    let imageElement = $('<img class="modal-img">');
-    imageElement.attr("src", pokemon.imageUrl);
-    let heightElement = $("<p>" + "HEIGHT : " + pokemon.height + "</p>");
-    let weightElement = $("<p>" + "WEIGHT : " + pokemon.weight + "</p>");
-    let typesElement = $(
-      "<p>" + "TYPES : " + pokemon.types.join(", ") + "</p>"
-    );
-    let abilitiesElement = $(
-      "<p>" + "ABILITIES : " + pokemon.abilities.join(", ") + "</p>"
-    );
+    //Creating elemet for the name in modal content
+    let nameElement = document.createElement("h1");
+    nameElement.innerText = item.name;
+    //creating img in modal content
+    let imageElement = document.createElement("img");
+    imageElement.classList.add("modal-img");
+    imageElement.setAttribute("src", item.imageUrl);
+    imageElement.classList.add("float-right"); // bootstrap class
+    //creating element for height in modal content
+    let heightElement = document.createElement("p");
+    heightElement.innerText = "height: " + item.height;
+    //creating element for type in modal content
+    function typeCount(item) {
+      if (item.types.length === 2) {
+        return item.types[0].type.name + ", " + item.types[1] / type.name;
+      } else {
+        return item.types[0].type.name;
+      }
+    }
+    let typesElement = document.createElement("p");
+    typesElement.innerText = "type: " + typeCount(item);
 
-    typesElement.addClass("array-item");
-    abilitiesElement.addClass("array-item");
-
-    modalTitle.append(nameElement);
-    modalBody.append(imageElement);
-    modalBody.append(heightElement);
-    modalBody.append(weightElement);
-    modalBody.append(typesElement);
-    modalBody.append(abilitiesElement);
+    //Add the new modal content
+    modalTitle.appendChild(nameElement);
+    modalBody.appendChild(imageElement);
+    modalBody.appendChild(heightElement);
+    modalBody.appendChild(weightElement);
+    modalBody.appendChild(typeElement);
+    modalBody.appendChild(abilitiesElement);
   }
 
   return {
@@ -144,20 +150,5 @@ pokemonRepository.loadList().then(function () {
     pokemonRepository.addListItem(pokemon);
   });
 });
-/* eslint no-console: "error" */
 
 console.log("Log a debug level message.");
-
-// ------- BELOW IS THE NEW CODE (1.8) FOR ADDING THE MODAL --------
-
-let dialogPromiseReject; //Set this later
-
-function hideModal() {
-  let modalContainer = document.querySelector("#modal-container");
-  modalContainer.classList.remove("is-visible");
-
-  if (dialogPromiseReject) {
-    dialogPromiseReject();
-    dialogPromiseReject = null;
-  }
-}
