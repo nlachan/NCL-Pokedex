@@ -27,8 +27,8 @@ let pokemonRepository = (function () {
     let button = document.createElement("button");
     button.classList.add("btn"); // bootstrap class
     button.classList.add("btn-block");
-    button.setAttribute("data-bs-toggle", "modal")
-    button.setAttribute("data-bs-target", "#pokemonModal")
+    button.setAttribute("data-bs-toggle", "modal");
+    button.setAttribute("data-bs-target", "#pokemonModal");
     button.innerText = pokemon.name;
     button.classList.add("button-class");
     // Append button to the li listpokemon as its child
@@ -138,4 +138,5 @@ pokemonRepository.loadList().then(function () {
   //generates new li and button itens for each pokemon on the list
   pokemonRepository.getAll().forEach(function (pokemon) {
     pokemonRepository.addListItem(pokemon);
+  });
 });
