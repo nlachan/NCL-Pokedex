@@ -135,7 +135,7 @@ let pokemonRepository = (function () {
 pokemonRepository.loadList().then(function () {
   // Now the data is loaded!
 
-  //generates new li and button itens for each pokemon on the list
+  //generates new li and button items for each pokemon on the list
   pokemonRepository.getAll().forEach(function (pokemon) {
     pokemonRepository.addListItem(pokemon);
   });
