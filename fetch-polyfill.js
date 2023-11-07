@@ -3,8 +3,8 @@
     ? factory(exports)
     : typeof define === "function" && define.amd
     ? define(["exports"], factory)
-    : factory((global.WHATWGFetch = {}));
-})(this, function (exports) {
+    : (factory((global.WHATWGFetch = {})));
+}(this, (function (exports) {
   "use strict";
 
   var support = {
@@ -549,4 +549,4 @@
   exports.fetch = fetch;
 
   Object.defineProperty(exports, "__esModule", { value: true });
-});
+})));
